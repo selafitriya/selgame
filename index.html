@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>selaaaaaa game uhuyyy🎓⚡ | Tembak Revisi & Teman Skripsi Paling Seru!</title>
+  <meta name="description"
+    content="Game aksi tembak revisi, roda nasib skripsi, chat simulator dospem, dan kata-kata penyemangat ceria buat mahasiswa akhir anti-sutuk!">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Background Glow Candy Orbs -->
+  <div class="bg-ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Alert Toast Ceria -->
+  <div id="game-toast" class="game-toast hidden"></div>
+
+  <div class="app-container">
+    <!-- Header Utama Cerah -->
+    <header class="header-bar">
+      <div class="logo-group">
+        <div class="logo-badge">🎓</div>
+        <div class="logo-text">
+          <h1>selaaaa game uhuyyy</h1>
+          <p>Tembak Revisi • Roda Nasib • Anti-Bosan & Ceria ✨</p>
+        </div>
+      </div>
+
+      <div class="audio-controls">
+        <button id="btn-lofi" class="audio-btn" title="Nyalakan Musik Santai">
+          <span class="pulse-dot"></span>
+          <span>🎵 Lagu Santai</span>
+        </button>
+        <button id="btn-rain" class="audio-btn" title="Nyalakan Suara Hujan Adem">
+          <span class="pulse-dot"></span>
+          <span>🌧️ Hujan Adem</span>
+        </button>
+        <button id="btn-mute" class="audio-btn active" title="Atur Suara">
+          <span>🔊</span>
+          <span class="audio-text">Suara Nyala</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Ticker Motivasi Ceria -->
+    <div class="ticker-container">
+      <span class="ticker-tag">💖 KATA PENYEMANGAT</span>
+      <div class="ticker-marquee">
+        <span id="ticker-content" class="ticker-text">Loading motivasi seru buat kamu pejuang skripsi tercinta...</span>
+      </div>
+    </div>
+
+    <!-- Navigasi Menu Seru -->
+    <nav class="nav-tabs" aria-label="Menu Utama">
+      <button class="tab-btn active" data-target="view-game">
+        <span class="tab-icon">🚀</span>
+        <span>Tembak Revisi (Aksi!)</span>
+      </button>
+      <button class="tab-btn" data-target="view-wheel">
+        <span class="tab-icon">🎡</span>
+        <span>Roda Nasib Skripsi</span>
+      </button>
+      <button class="tab-btn" data-target="view-chat">
+        <span class="tab-icon">💬</span>
+        <span>Chat Dospem Simulator</span>
+      </button>
+      <button class="tab-btn" data-target="view-gacha">
+        <span class="tab-icon">🎴</span>
+        <span>Buka Kartu Semangat</span>
+      </button>
+      <button class="tab-btn" data-target="view-rage">
+        <span class="tab-icon">🥊</span>
+        <span>Pukul Revisi (Plong!)</span>
+      </button>
+      <button class="tab-btn" data-target="view-fokus">
+        <span class="tab-icon">⏱️</span>
+        <span>Ruang Ngetik Santai</span>
+      </button>
+      <button class="tab-btn" data-target="view-cert">
+        <span class="tab-icon">📜</span>
+        <span>Sertifikat Kelulusan</span>
+      </button>
+    </nav>
+
+    <!-- ===================================================================
+         TAB 1: TEMBAK REVISI (ACTION ARCADE SHOOTER)
+         =================================================================== -->
+    <section id="view-game" class="view-section active">
+      <div class="game-layout">
+        <!-- Canvas Game Box -->
+        <div class="canvas-wrapper">
+          <!-- Game HUD -->
+          <div class="game-hud">
+            <div class="hud-item">
+              <span class="hud-label">Darah Nyawa</span>
+              <span id="game-hp" class="hud-val">❤️❤️❤️</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Bab Berapa Nih?</span>
+              <span id="game-chapter" class="hud-val">BAB 1: Pendahuluan</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Poin Semangat</span>
+              <span id="game-score" class="hud-val">0 Poin</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Auto-Tembak</span>
+              <button id="btn-toggle-autofire" class="auto-fire-btn active">AKTIF ⚡</button>
+            </div>
+          </div>
+
+          <!-- Main Game Canvas -->
+          <canvas id="game-canvas"></canvas>
+
+          <!-- Kontrol Layar HP -->
+          <div class="mobile-controls">
+            <button id="touch-left" class="touch-btn" aria-label="Geser Kiri">◀ KIRI</button>
+            <button id="touch-shoot" class="touch-btn"
+              style="background: var(--pop-pink-light); color: var(--pop-pink); border-color: var(--pop-pink);"
+              aria-label="Tembak Laser">💥 TEMBAK!</button>
+            <button id="touch-right" class="touch-btn" aria-label="Geser Kanan">KANAN ▶</button>
+          </div>
+
+          <!-- Layar Mulai Game -->
+          <div id="game-start-overlay" class="game-overlay">
+            <div style="font-size: 3.8rem; margin-bottom: 8px;">🚀🖊️💥</div>
+            <h2 class="overlay-title">AKSI TEMBAK REVISI!</h2>
+            <p class="overlay-subtitle">
+              Kendalikan Pejuang Skripsi dan tembak laser pena 🖊️ buat hancurkan coretan merah, monster Turnitin, &
+              overthinking! Kumpulin Kopi Boba, Triple Laser, & Bom Nuke!
+            </p>
+            <button id="btn-start-game" class="btn-cyber-primary">
+              GAS TEMBAK SEKARANG! 🚀
+            </button>
+          </div>
+        </div>
+
+        <!-- Panduan Singkat Senjata -->
+        <aside class="game-info-sidebar">
+          <div class="card-panel">
+            <div class="panel-header">
+              <h3>🔫 Senjata & Power-Up Seru</h3>
+            </div>
+            <div class="legend-list">
+              <div class="legend-item">
+                <div class="legend-icon">🖊️</div>
+                <div class="legend-text">
+                  <strong>Pena Laser Ajaib</strong>
+                  Klik layar atau tekan Spasi buat nembak dan ledakin revisi!
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-icon">⚡</div>
+                <div class="legend-text">
+                  <strong>Triple Laser Pen</strong>
+                  Tembak 3 laser pena sekaligus buat sapu bersih musuh!
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-icon">💣</div>
+                <div class="legend-text">
+                  <strong>Bom Turnitin 0%</strong>
+                  Ledakin semua monster di layar dengan hujan konfeti!
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-icon">🧋</div>
+                <div class="legend-text">
+                  <strong>Kopi Boba (+Poin)</strong>
+                  Nambah kombo dan poin semangat biar cepet wisuda!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-panel">
+            <div class="panel-header">
+              <h3>💡 Tips Gacor</h3>
+            </div>
+            <p style="font-size: 0.92rem; color: #475569; line-height: 1.6;">
+              "Aktifin tombol Auto-Tembak di atas biar kamu tinggal geser-geser santai sambil dengerin suara ledakannya
+              yang nagih!"
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 2: RODA NASIB SKRIPSI (SPIN THE WHEEL)
+         =================================================================== -->
+    <section id="view-wheel" class="view-section">
+      <div class="wheel-layout">
+        <div class="wheel-box">
+          <div style="margin-bottom: 16px;">
+            <h2 style="font-family: 'Fredoka', cursive; font-size: 2.2rem; color: var(--pop-pink);">🎡 RODA NASIB
+              SKRIPSI</h2>
+            <p style="color: var(--text-medium); font-size: 1rem;">Putar roda keberuntungan buat nentuin takdir
+              skripsimu hari ini!</p>
+          </div>
+
+          <canvas id="wheel-canvas"></canvas>
+
+          <button id="btn-spin-wheel" class="btn-cyber-primary" style="font-size: 1.15rem; padding: 16px 48px;">
+            PUTAR RODA SEKARANG! 🎯
+          </button>
+
+          <!-- Banner Hasil Putaran -->
+          <div id="wheel-result" class="wheel-result-banner">
+            <div id="wheel-result-title" class="wheel-result-title">HASIL PUTARAN</div>
+            <div id="wheel-result-desc" class="wheel-result-desc">Deskripsi hadiah kamu</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 3: CHAT DOSPEM SIMULATOR (INTERACTIVE CHAT)
+         =================================================================== -->
+    <section id="view-chat" class="view-section">
+      <div class="chat-simulator-card">
+        <div class="chat-header">
+          <div id="chat-dospem-avatar" class="chat-avatar">👨‍🏫</div>
+          <div class="chat-info">
+            <h4 id="chat-dospem-name">Prof. Bambang (Dospem 1)</h4>
+            <span>Online • Siap Bimbingan</span>
+          </div>
+        </div>
+
+        <div id="chat-messages" class="chat-body">
+          <div id="chat-bubble-dospem" class="chat-bubble bubble-dospem">
+            Mas/Mbak, bab 3 kamu saya baca kemarin. Besok jam 07.00 pagi bisa ke ruangan saya untuk bimbingan?
+          </div>
+        </div>
+
+        <div id="chat-options" class="chat-options-group">
+          <!-- Tombol Pilihan Jawaban injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 4: BUKA KARTU PENYEMANGAT (GACHA CERIA)
+         =================================================================== -->
+    <section id="view-gacha" class="view-section">
+      <div class="gacha-hero">
+        <h2>🎴 TARIK KARTU PENYEMANGAT</h2>
+        <p>Lagi sutuk atau capek? Buka kartu motivasi seru di bawah ini buat balikin senyum dan semangat kamu!</p>
+
+        <div class="gacha-actions">
+          <button id="btn-gacha-1x" class="btn-cyber-primary">
+            ✨ Buka 1 Kartu
+          </button>
+          <button id="btn-gacha-10x" class="btn-cyber-secondary">
+            🎁 Buka 10 Kartu Sekaligus
+          </button>
+        </div>
+      </div>
+
+      <!-- Kartu Hologram 3D Interaktif -->
+      <div class="gacha-card-stage">
+        <div id="gacha-card-container" class="holo-card-container">
+          <div id="gacha-card" class="holo-card rarity-SSR">
+            <div class="holo-foil"></div>
+
+            <div class="card-top">
+              <span id="card-rarity-text" class="card-rarity">SSR</span>
+              <span id="card-badge-text" class="card-badge">🔥 MENYALA TEMANKU</span>
+            </div>
+
+            <div class="card-body">
+              <div class="quote-quote-icon">“</div>
+              <p id="card-main-text" class="card-text">
+                Kamu udah lewatin 7 semester kuliah yang nano-nano rasanya. Masa mau nyerah cuma gara-gara Bab 4?
+                Bangkit dong, kamu itu tokoh utama di hidup kamu!
+              </p>
+              <p id="card-sub-text" class="card-subtext">
+                Dikit lagi sarjana, yuk bisa yuk ketik 1 halaman hari ini!
+              </p>
+            </div>
+
+            <div class="card-footer">
+              <span id="card-tag-text" class="card-tag">#YukBisaYuk #GasKetik</span>
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-copy-quote" class="card-share-btn">📋 Salin Teks</button>
+                <button id="btn-share-wa" class="card-share-btn">💬 Kirim ke WA</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Galeri Kartu Koleksi -->
+      <div class="gallery-section">
+        <div class="panel-header">
+          <h3>📚 Kartu-Kartu yang Pernah Kamu Buka</h3>
+          <span style="font-size: 0.85rem; color: var(--pop-pink); font-weight: 700;">Tersimpan Otomatis ✨</span>
+        </div>
+        <div id="quotes-gallery" class="gallery-grid">
+          <!-- Item kartu akan dimuat otomatis -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 5: PUKUL REVISI (RUANG TINJU BIAR PLONG)
+         =================================================================== -->
+    <section id="view-rage" class="view-section">
+      <div class="rage-layout">
+        <div id="rage-arena" class="rage-arena">
+          <div class="rage-stress-bar-wrapper">
+            <div class="stress-header">
+              <span>TINGKAT KELEGAAN HATI</span>
+              <span style="color: var(--pop-pink);">PENUHIN 100% BIAR PLONG!</span>
+            </div>
+            <div class="stress-progress-bg">
+              <div id="stress-fill" class="stress-progress-fill"></div>
+            </div>
+          </div>
+
+          <div id="smash-target" class="smash-target" title="Klik atau tap sepuasnya!">
+            <div class="smash-icon">🥊💥</div>
+            <div class="smash-label">PANGKAS CORETAN!</div>
+          </div>
+
+          <p style="margin-top: 22px; font-size: 0.95rem; color: var(--text-medium);">
+            👆 Klik atau tap bola di atas sepuasnya buat buang rasa kesel, pusing revisi, atau typo naskah!
+          </p>
+
+          <div class="rage-counter-stats">
+            <div class="rage-stat-box">
+              <span>Total Pukulan</span>
+              <strong id="rage-smash-count">0</strong>
+            </div>
+            <div class="rage-stat-box">
+              <span>Status Ketenangan</span>
+              <strong id="rage-rank">Mulai Melepas Beban</strong>
+            </div>
+          </div>
+        </div>
+
+        <aside class="game-info-sidebar">
+          <div class="card-panel">
+            <div class="panel-header">
+              <h3>🧘 Peluk Hangat Buat Kamu</h3>
+            </div>
+            <p style="font-size: 0.92rem; color: #475569; line-height: 1.6; margin-bottom: 12px;">
+              Pusing pas skripsian itu hal yang wajar banget dialami semua calon sarjana. Kamu ga sendirian!
+            </p>
+            <p style="font-size: 0.92rem; color: var(--pop-ocean); font-weight: 700;">
+              Lepasin keselnya di sini, abis itu cuci muka, minum air dingin, dan balik lagi dengan hati yang lebih
+              tenang!
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 6: RUANG NGETIK SANTAI (TIMER & TARGET HARIAN)
+         =================================================================== -->
+    <section id="view-fokus" class="view-section">
+      <div class="fokus-layout">
+        <div class="card-panel pomo-card">
+          <div class="pomo-mode-selector">
+            <button id="btn-mode-work" class="pomo-mode-btn active">🔥 25 Menit Ngetik</button>
+            <button id="btn-mode-break" class="pomo-mode-btn">☕ 5 Menit Santai</button>
+          </div>
+
+          <div id="pomo-display" class="timer-circle">25:00</div>
+
+          <div class="pomo-controls">
+            <button id="btn-pomo-start" class="btn-cyber-primary">Mulai Ngetik ▶</button>
+            <button id="btn-pomo-reset" class="btn-cyber-secondary">Ulang ↺</button>
+          </div>
+
+          <p class="pomo-quote">
+            "Cuma 25 menit ngetik tanpa buka sosmed = 2 paragraf kelar tanpa kerasa pusing!"
+          </p>
+        </div>
+
+        <div class="card-panel todo-panel">
+          <div class="panel-header">
+            <h3>📝 Target Kecil Hari Ini</h3>
+            <span style="font-size: 0.82rem; color: var(--pop-pink); font-weight: 700;">Satu-satu aja yaa!</span>
+          </div>
+
+          <div class="todo-input-group">
+            <input id="todo-input" type="text" class="todo-input"
+              placeholder="Tulis target kecil... (misal: Rapiin Bab 2 halaman 10)" />
+            <button id="btn-add-todo" class="btn-cyber-primary" style="padding: 10px 22px; font-size: 0.9rem;">+
+              Tambah</button>
+          </div>
+
+          <div id="todo-list" class="todo-list">
+            <!-- Daftar Todo -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 7: SERTIFIKAT CALON SARJANA
+         =================================================================== -->
+    <section id="view-cert" class="view-section">
+      <div class="cert-layout">
+        <div class="card-panel cert-form">
+          <div class="panel-header">
+            <h3>🎓 Tulis Gelar Impian Kamu</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="cert-input-name">Nama Lengkap Kamu</label>
+            <input id="cert-input-name" type="text" class="form-control" value="Bintang Pratama" />
+          </div>
+
+          <div class="form-group">
+            <label for="cert-input-degree">Gelar Impian (S.Kom / S.T / S.E / S.Ked / dll)</label>
+            <input id="cert-input-degree" type="text" class="form-control" value="S.Kom" />
+          </div>
+
+          <div class="form-group">
+            <label for="cert-input-campus">Nama Kampus Kamu</label>
+            <input id="cert-input-campus" type="text" class="form-control" value="Universitas Indonesia" />
+          </div>
+
+          <div class="form-group">
+            <label for="cert-input-motto">Predikat Kelulusan</label>
+            <input id="cert-input-motto" type="text" class="form-control" value="LULUS DENGAN PUJIAN (CUMLAUDE)" />
+          </div>
+
+          <button id="btn-download-cert" class="btn-cyber-primary" style="margin-top: 10px;">
+            📥 Download Sertifikat Cantik (PNG)
+          </button>
+        </div>
+
+        <div class="cert-preview-card">
+          <div class="cert-watermark">🎓</div>
+
+          <div class="cert-header">
+            <div class="cert-emblem">🎓✨</div>
+            <div class="cert-title-top">SERTIFIKAT MANIFESTASI KELULUSAN</div>
+            <h2 class="cert-title-main">CALON SARJANA HEBAT</h2>
+          </div>
+
+          <div class="cert-body">
+            <p class="cert-to">DIBERIKAN DENGAN RASA BANGGA KEPADA:</p>
+            <div id="cert-preview-name" class="cert-student-name">Bintang Pratama, S.Kom</div>
+            <div id="cert-preview-campus" class="cert-campus">Universitas Indonesia</div>
+            <div>
+              <span id="cert-preview-status" class="cert-status">LULUS DENGAN PUJIAN (CUMLAUDE)</span>
+            </div>
+          </div>
+
+          <div class="cert-footer">
+            <div class="cert-sign-col">
+              <span class="cert-sign-label">DOSEN PEMBIMBING</span>
+              <div class="cert-sign-name">Prof. ACC Satu Kali, M.Kom</div>
+            </div>
+            <div class="cert-stamp">ACC RESMI</div>
+            <div class="cert-sign-col" style="text-align: right;">
+              <span class="cert-sign-label">STATUS SKRIPSI</span>
+              <div class="cert-sign-name" style="color: var(--pop-ocean);">100% SELESAI & SAH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modals -->
+  <div id="game-over-modal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-icon">🤍☕</div>
+      <h3 class="modal-title">KECAPEKAN BENTAR!</h3>
+      <p class="modal-subtitle">Gak apa-apa bestie! Pejuang tangguh juga butuh narik napas. Minum es teh dulu yuk, terus
+        kita coba lagi!</p>
+      <div class="modal-stats">
+        <div>
+          <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">Poin Semangat</span>
+          <strong id="lose-score" style="display: block; font-size: 1.25rem; color: var(--pop-ocean);">0 Poin</strong>
+        </div>
+        <div>
+          <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">Bab Terakhir</span>
+          <strong id="lose-chapter" style="display: block; font-size: 1.25rem; color: var(--pop-pink);">Bab 1</strong>
+        </div>
+      </div>
+      <div class="modal-quote-box">
+        <span id="lose-quote">"Skripsi yang baik adalah skripsi yang kelar, bukan skripsi yang sempurna di
+          khayalan."</span>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-restart-game" class="btn-cyber-primary">Coba Lagi Yuk ↺</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-win-modal" class="modal-backdrop hidden">
+    <div class="modal-dialog victory">
+      <div class="modal-icon">🎓🎉</div>
+      <h3 class="modal-title">SELAMAT! KAMU LULUS SIDANG!</h3>
+      <p class="modal-subtitle">HOREEE! Semua rintangan revisi berhasil kamu tembak jatuh! Kamu resmi jadi pemenang!</p>
+      <div class="modal-stats">
+        <div>
+          <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">Total Poin</span>
+          <strong id="win-score" style="display: block; font-size: 1.25rem; color: #f59e0b;">6000 Poin</strong>
+        </div>
+        <div>
+          <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">Hasil Aksi</span>
+          <strong id="win-items" style="display: block; font-size: 1.25rem; color: var(--pop-ocean);">Juara
+            Skripsi</strong>
+        </div>
+      </div>
+      <p style="font-size: 0.95rem; color: var(--text-dark); margin-bottom: 24px;">
+        Gelar sarjana udah di depan mata. Jangan lupa download sertifikat kelulusan kamu di menu Sertifikat yaa!
+      </p>
+      <div class="modal-actions">
+        <button id="btn-win-restart" class="btn-cyber-primary">Main Lagi 🎮</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="audio.js"></script>
+  <script src="quotes.js"></script>
+  <script src="minigames.js"></script>
+  <script src="game.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
